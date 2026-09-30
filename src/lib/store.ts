@@ -5,9 +5,9 @@
  * fulfilment rules. Swap the values here and the whole storefront follows.
  *
  * This is an Indian storefront: prices in INR, UPI and cash on delivery as the
- * default rails, and a Jaipur studio. Number and date formatting goes through
- * `store.locale` — never hardcode a locale, or prices will render with the
- * wrong digit grouping.
+ * default rails, and a home base in Amroha, Uttar Pradesh. Number and date
+ * formatting goes through `store.locale` — never hardcode a locale, or prices
+ * will render with the wrong digit grouping.
  */
 
 export const store = {
@@ -26,16 +26,19 @@ export const store = {
 } as const;
 
 export const contact = {
-  whatsapp: '919829012345',
-  phoneDisplay: '+91 98290 12345',
-  email: 'hello@amartq.com',
-  supportEmail: 'care@amartq.com',
+  /** Single number for calls and WhatsApp — 10 digits, no country code. */
+  mobile: '9548229948',
+  whatsapp: '919548229948',
+  phoneDisplay: '+91 95482 29948',
+  gstin: '09CMOPA9734M1ZC',
   address: {
-    line1: 'Studio 10, Bagru',
-    line2: 'Block Print Quarter',
-    city: 'Jaipur',
+    line1: 'Kaural Dhanauree',
+    city: 'Meer',
+    district: 'Amroha',
+    state: 'Uttar Pradesh',
+    stateCode: 'UP',
     country: 'India',
-    postalCode: '302001',
+    postalCode: '244251',
   },
   hours: [
     { days: 'Monday – Saturday', time: '10:00 – 20:00' },
@@ -70,10 +73,10 @@ export const paymentMethods = [
 ] as const;
 
 export const social = [
-  { label: 'Instagram', href: 'https://instagram.com/amartq' },
-  { label: 'Facebook', href: 'https://facebook.com/amartq' },
-  { label: 'Pinterest', href: 'https://pinterest.com/amartq' },
-  { label: 'TikTok', href: 'https://tiktok.com/@amartq' },
+  { label: 'Instagram', href: '' },
+  { label: 'Facebook', href: '' },
+  { label: 'Pinterest', href: '' },
+  { label: 'TikTok', href: '' },
 ] as const;
 
 export const nav = {

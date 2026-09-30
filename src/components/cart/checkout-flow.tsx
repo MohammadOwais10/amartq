@@ -70,7 +70,7 @@ export function CheckoutFlow() {
     if (d.name.trim().length < 2) e.name = 'Please tell us your name';
     const digits = d.phone.replace(/[\s-]/g, '');
     if (!PHONE_RE.test(digits)) {
-      e.phone = 'Enter a valid 10-digit mobile number, e.g. 98290 12345';
+      e.phone = 'Enter a valid 10-digit mobile number, e.g. 95482 29948';
     }
     if (d.address.trim().length < 8) e.address = 'Please include your street address';
     if (d.city.trim().length < 2) e.city = 'Which city should we deliver to?';
@@ -263,7 +263,7 @@ export function CheckoutFlow() {
                 onBlur={() => blur('phone')}
                 error={touched.phone ? errors.phone : undefined}
                 autoComplete="tel"
-                placeholder="98290 12345"
+                placeholder="95482 29948"
                 prefix={`+${store.dialCode}`}
                 hint="We use this for delivery updates only."
               />
@@ -297,7 +297,7 @@ export function CheckoutFlow() {
                 onBlur={() => blur('city')}
                 error={touched.city ? errors.city : undefined}
                 autoComplete="address-level2"
-                placeholder="Jaipur"
+                placeholder="Meer"
               />
               <div>
                 <label htmlFor="delivery" className="label">

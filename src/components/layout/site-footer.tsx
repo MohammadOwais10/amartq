@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import { Mail, MapPin, MessageCircle, Phone } from 'lucide-react';
+import { MapPin, MessageCircle, Phone } from 'lucide-react';
 import { BrandMark } from '@/components/ui/brand-mark';
 import { PaymentMethods } from '@/components/ui/payment-methods';
-import { contact, nav, social, store } from '@/lib/store';
+import { contact, nav, store } from '@/lib/store';
 import { whatsappUrl } from '@/lib/whatsapp';
 
 /**
@@ -60,42 +60,20 @@ export function SiteFooter() {
                   {contact.phoneDisplay}
                 </a>
               </li>
-              <li>
-                <a
-                  href={`mailto:${contact.supportEmail}`}
-                  className="inline-flex items-center gap-2.5 text-brand-200 transition-colors hover:text-accent-500"
-                >
-                  <Mail size={15} aria-hidden="true" className="shrink-0" />
-                  {contact.supportEmail}
-                </a>
-              </li>
               <li className="flex items-start gap-2.5 text-brand-300">
                 <MapPin size={15} aria-hidden="true" className="mt-0.5 shrink-0" />
                 <span>
                   {contact.address.line1}
                   <br />
-                  {contact.address.line2}
+                  {contact.address.city}, Distt. {contact.address.district}
                   <br />
-                  {contact.address.city} {contact.address.postalCode}, {contact.address.country}
+                  {contact.address.state} {contact.address.postalCode}
                 </span>
               </li>
             </ul>
           </address>
 
-          <ul className="mt-7 flex flex-wrap gap-2" aria-label={`${store.name} on social media`}>
-            {social.map((s) => (
-              <li key={s.label}>
-                <a
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block border border-white/15 px-3 py-1.5 text-[11px] font-medium tracking-wide text-brand-200 transition-colors hover:border-accent-500 hover:text-accent-500"
-                >
-                  {s.label}
-                </a>
-              </li>
-            ))}
-          </ul>
+      
         </div>
 
         <FooterColumn title="Shop" className="lg:col-span-2">
@@ -139,7 +117,7 @@ export function SiteFooter() {
             <PaymentMethods />
           </div>
 
-          <p className="text-xs text-brand-400 sm:text-right">
+          <p className="text-xs text-brand-100 sm:text-right">
             &copy; {year} {store.legalName}. All rights reserved.
             <span className="mx-2 text-brand-500" aria-hidden="true">
               &middot;
@@ -153,6 +131,9 @@ export function SiteFooter() {
             <Link href="/policies/terms" className="transition-colors hover:text-accent-500">
               Terms
             </Link>
+          </p>
+          <p className="mt-1.5 text-xs text-brand-100 sm:text-right">
+            GSTIN {contact.gstin}
           </p>
         </div>
       </div>

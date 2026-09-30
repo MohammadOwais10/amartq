@@ -14,9 +14,6 @@ export default function manifest(): MetadataRoute.Manifest {
     theme_color: '#09254A',
     categories: ['shopping', 'lifestyle', 'home'],
     lang: store.locale,
-    icons: [
-      { src: '/icon', sizes: '512x512', type: 'image/png' },
-      { src: '/apple-icon', sizes: '512x512', type: 'image/png' },
-    ],
+    icons: [{ src: '/favicon.ico', sizes: '48x48 32x32 16x16', type: 'image/x-icon' }],
   };
 }

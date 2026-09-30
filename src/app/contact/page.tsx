@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { ArrowUpRight, Mail, MessageCircle, Phone } from 'lucide-react';
+import { ArrowUpRight, MapPin, MessageCircle, Phone } from 'lucide-react';
 import { PageHero } from '@/components/ui/page-hero';
 import { sceneArt } from '@/lib/generated/images';
 import { contact, social, store } from '@/lib/store';
@@ -8,7 +8,7 @@ import { jsonLd } from '@/lib/utils';
 
 export const metadata: Metadata = {
   title: 'Contact Us',
-  description: `Talk to the AMARTQ team on WhatsApp, by phone or by email. We answer every message ourselves, usually within the hour.`,
+  description: `Talk to the AMARTQ team on WhatsApp or by phone. We answer every message ourselves, usually within the hour.`,
   alternates: { canonical: '/contact' },
 };
 
@@ -37,7 +37,6 @@ export default function ContactPage() {
     url: store.url,
     image: `${store.url}${sceneArt.story}`,
     telephone: contact.phoneDisplay,
-    email: contact.email,
     sameAs: social.map((s) => s.href),
     contactPoint: [
       {
@@ -64,7 +63,7 @@ export default function ContactPage() {
 
       {/* Primary channel -------------------------------------------
           WhatsApp gets the whole band because it is the only channel the
-          copy promises an hourly answer on. Phone and email drop to a
+          copy promises an hourly answer on. Phone and location drop to a
           compact row underneath, so the page has one loud action instead of
           three equal ones. */}
       <section className="border-b border-sand-200 bg-white">
@@ -103,40 +102,35 @@ export default function ContactPage() {
 
           {/* Secondary channels — inline, not cards. They are fallbacks,
               so they should read as quieter than the primary. */}
-          <ul className="mt-4 grid gap-4 sm:grid-cols-2" data-reveal>
-            <li>
-              <a
-                href={`tel:${contact.whatsapp}`}
-                className="group flex h-full items-start gap-4 border border-sand-200 bg-white p-6 transition-colors hover:border-brand-900/25"
-              >
-                <span className="grid size-10 shrink-0 place-items-center rounded-full bg-sand-200 text-brand-900 transition-colors group-hover:bg-sand-300">
-                  <Phone size={18} aria-hidden="true" />
+          <div className="mt-4 grid gap-4 sm:grid-cols-2" data-reveal>
+            <a
+              href={`tel:${contact.whatsapp}`}
+              className="group flex h-full items-start gap-4 border border-sand-200 bg-white p-6 transition-colors hover:border-brand-900/25"
+            >
+              <span className="grid size-10 shrink-0 place-items-center rounded-full bg-sand-200 text-brand-900 transition-colors group-hover:bg-sand-300">
+                <Phone size={18} aria-hidden="true" />
+              </span>
+              <span className="min-w-0">
+                <span className="block font-display text-lg text-brand-900">Call us</span>
+                <span className="mt-1 block text-sm text-ink-soft">
+                  {contact.phoneDisplay} &mdash; {contact.hours[0].days}, {contact.hours[0].time}.
+                  Faster on WhatsApp.
                 </span>
-                <span className="min-w-0">
-                  <span className="block font-display text-lg text-brand-900">Call us</span>
-                  <span className="mt-1 block text-sm text-ink-soft">
-                    {contact.phoneDisplay} &mdash; {contact.hours[0].days}, {contact.hours[0].time}
-                  </span>
+              </span>
+            </a>
+            <div className="flex h-full items-start gap-4 border border-sand-200 bg-white p-6">
+              <span className="grid size-10 shrink-0 place-items-center rounded-full bg-sand-200 text-brand-900">
+                <MapPin size={18} aria-hidden="true" />
+              </span>
+              <span className="min-w-0">
+                <span className="block font-display text-lg text-brand-900">Where we are</span>
+                <span className="mt-1 block text-sm text-ink-soft">
+                  {contact.address.city}, Distt. {contact.address.district}, {contact.address.state}{' '}
+                  {contact.address.postalCode}. Dispatches from here across India.
                 </span>
-              </a>
-            </li>
-            <li>
-              <a
-                href={`mailto:${contact.supportEmail}`}
-                className="group flex h-full items-start gap-4 border border-sand-200 bg-white p-6 transition-colors hover:border-brand-900/25"
-              >
-                <span className="grid size-10 shrink-0 place-items-center rounded-full bg-sand-200 text-brand-900 transition-colors group-hover:bg-sand-300">
-                  <Mail size={18} aria-hidden="true" />
-                </span>
-                <span className="min-w-0">
-                  <span className="block font-display text-lg text-brand-900">Email support</span>
-                  <span className="mt-1 block text-sm break-all text-ink-soft">
-                    {contact.supportEmail} &mdash; orders and after-sales
-                  </span>
-                </span>
-              </a>
-            </li>
-          </ul>
+              </span>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -158,7 +152,7 @@ export default function ContactPage() {
                 <li key={s.label}>
                   <a
                     href={s.href}
-                    target="_blank"
+                    // target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex border border-sand-300 px-3 py-1.5 text-xs text-ink-soft transition-colors hover:border-brand-900 hover:text-brand-900"
                   >

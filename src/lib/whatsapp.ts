@@ -78,6 +78,7 @@ export function buildOrderMessage(
 
   out.push('');
   out.push(`Placed from ${store.url}`);
+  out.push(`GSTIN: ${contact.gstin}`);
   out.push('_Please confirm availability and the delivery window._');
 
   return out.join('\n');

@@ -150,7 +150,7 @@ export default function BespokePage() {
           </a>
 
           <p className="mt-4 text-xs text-sand-500">
-            Prefer email?{' '}
+            Prefer to talk first?{' '}
             <Link
               href="/contact"
               className="underline underline-offset-4 transition-colors hover:text-accent-600"

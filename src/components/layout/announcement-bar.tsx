@@ -9,7 +9,7 @@ const messages = [
   },
   { icon: Truck, text: 'Dispatched within 24 hours' },
   { icon: MessageCircle, text: 'Order on WhatsApp — no account needed' },
-  { icon: Phone, text: `Help: ${contact.phoneDisplay}` },
+  { icon: Phone, text: `Contact: ${contact.phoneDisplay}` },
 ];
 
 export function AnnouncementBar() {

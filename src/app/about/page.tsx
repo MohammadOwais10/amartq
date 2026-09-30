@@ -131,7 +131,7 @@ export default function AboutPage() {
           <div className="relative aspect-4/5 overflow-hidden bg-sand-200">
             <Image
               src="/images/websiteimgs/about-bg.png"
-              alt="AMARTQ textiles in the studio"
+              alt="AMARTQ block printed cotton in warm daylight"
               fill
               preload
               sizes="(min-width: 1024px) 46vw, 100vw"

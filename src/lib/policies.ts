@@ -1,4 +1,4 @@
-import { fulfilment, store } from '@/lib/store';
+import { contact, fulfilment, store } from '@/lib/store';
 
 export type Policy = {
   slug: string;
@@ -69,7 +69,7 @@ export const policies: Policy[] = [
       {
         heading: 'Exchanges',
         body: [
-          'Exchanges are free and more common than refunds. We hold your replacement in the studio while the original is in transit, so you are not without a sheet in the meantime.',
+          'Exchanges are free and more common than refunds. We hold your replacement here while the original is in transit, so you are not without a sheet in the meantime.',
           'If the size you need is not in stock, we will tell you before you commit and you can wait for the next run instead.',
         ],
       },
@@ -110,7 +110,7 @@ export const policies: Policy[] = [
         heading: 'The short version',
         body: [
           'This site has no accounts, no payment processing and no third-party advertising trackers. Your bag and your wishlist are stored in your own browser and are never transmitted to us.',
-          'We only receive what you choose to type into a WhatsApp message or an email.',
+          'We only receive what you choose to type into a WhatsApp message. We have no newsletter and no marketing list.',
         ],
       },
       {
@@ -176,9 +176,18 @@ export const policies: Policy[] = [
         ],
       },
       {
+        heading: 'Legal details',
+        body: [
+          `Registered name: ${store.legalName}.`,
+          `GSTIN: ${contact.gstin}.`,
+          `Registered address: ${contact.address.line1}, ${contact.address.city}, Distt. ${contact.address.district}, ${contact.address.state} ${contact.address.postalCode}, ${contact.address.country}.`,
+          `Phone: ${contact.phoneDisplay}. Orders and enquiries are handled on WhatsApp at the same number.`,
+        ],
+      },
+      {
         heading: 'Governing law',
         body: [
-          'These terms are governed by the laws of India, and the courts of Rajasthan have jurisdiction over any dispute.',
+          'These terms are governed by the laws of India, and the courts of Uttar Pradesh have jurisdiction over any dispute.',
         ],
       },
     ],

@@ -101,15 +101,16 @@ const organisationSchema = {
   name: store.name,
   legalName: store.legalName,
   url: store.url,
-  logo: `${store.url}/icon`,
+  logo: `${store.url}/images/logo/amartq-logo.png`,
   description: store.description,
   foundingDate: String(store.foundedYear),
-  email: contact.email,
+  taxID: contact.gstin,
   telephone: contact.phoneDisplay,
   address: {
     '@type': 'PostalAddress',
-    streetAddress: `${contact.address.line1}, ${contact.address.line2}`,
+    streetAddress: contact.address.line1,
     addressLocality: contact.address.city,
+    addressRegion: contact.address.state,
     postalCode: contact.address.postalCode,
     addressCountry: 'IN',
   },
@@ -123,9 +124,9 @@ const organisationSchema = {
     },
   ],
   sameAs: [
-    'https://instagram.com/amartq',
-    'https://facebook.com/amartq',
-    'https://pinterest.com/amartq',
+    '#',
+    '#',
+    '#',
   ],
 };
 
