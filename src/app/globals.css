@@ -1,26 +1,569 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ==========================================================================
+   AMARTQ design tokens
+   Brand: #09254A (navy) · #FF7900 (orange)
+   ========================================================================== */
+
+@theme {
+  /* --- Brand navy ------------------------------------------------------- */
+  --color-brand-50: #f2f5fa;
+  --color-brand-100: #e3e9f3;
+  --color-brand-200: #c2d0e4;
+  --color-brand-300: #93aacd;
+  --color-brand-400: #5d7cad;
+  --color-brand-500: #33547f;
+  --color-brand-600: #1d3a61;
+  --color-brand-700: #122c4c;
+  --color-brand-800: #0d2340;
+  --color-brand-900: #09254a;
+  --color-brand-950: #061830;
+
+  /* --- Brand accent (orange) -------------------------------------------- */
+  --color-accent-50: #fff6ed;
+  --color-accent-100: #ffead2;
+  --color-accent-200: #ffd1a3;
+  --color-accent-300: #ffb169;
+  --color-accent-400: #ff9638;
+  --color-accent-500: #ff7900;
+  --color-accent-600: #e86200;
+  --color-accent-700: #bd4a05;
+  --color-accent-800: #953b0c;
+  --color-accent-900: #79310e;
+
+  /* --- Warm neutrals ---------------------------------------------------- */
+  --color-sand-50: #fbf9f6;
+  --color-sand-100: #f6f2ec;
+  --color-sand-200: #ece5da;
+  --color-sand-300: #ddd2c2;
+  --color-sand-400: #c4b5a0;
+  --color-sand-500: #a8947c;
+  --color-sand-600: #887560;
+  --color-sand-700: #6d5e4d;
+  --color-sand-800: #5a4e41;
+  --color-sand-900: #4c4239;
+
+  /* --- Semantic --------------------------------------------------------- */
+  --color-ink: #0b1220;
+  --color-ink-soft: #46505f;
+  --color-success: #1f7a53;
+  --color-danger: #b42318;
+
+  /* --- Type ------------------------------------------------------------- */
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --text-hero: clamp(2.75rem, 1.4rem + 6vw, 6.5rem);
+  --text-display: clamp(2rem, 1.1rem + 3.6vw, 4rem);
+  --text-section: clamp(1.75rem, 1.1rem + 2.4vw, 3rem);
+
+  /* --- Motion ----------------------------------------------------------- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+
+  /* --- Layout ----------------------------------------------------------- */
+  --radius-card: 0.375rem;
+
+  /* --- Shadows ---------------------------------------------------------- */
+  --shadow-card: 0 1px 2px rgb(9 37 74 / 0.04), 0 8px 24px -12px rgb(9 37 74 / 0.14);
+  --shadow-lift: 0 2px 4px rgb(9 37 74 / 0.05), 0 24px 48px -20px rgb(9 37 74 / 0.28);
+  --shadow-panel: -24px 0 64px -32px rgb(9 37 74 / 0.3);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* ==========================================================================
+   Base
+   ========================================================================== */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  *,
+  *::before,
+  *::after {
+    border-color: var(--color-sand-200);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    /* No scroll-behavior: smooth. It animated the router's scroll-to-top on
+       every navigation, and the sticky header's height transition replayed
+       across that scroll — which read as the nav bouncing on arrival. Anchor
+       links get smooth scrolling from .anchor-smooth instead. */
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    background-color: var(--color-sand-50);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: var(--color-accent-500);
+    color: var(--color-brand-950);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent-500);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Native controls tuned to the palette */
+  input,
+  select,
+  textarea,
+  button {
+    font: inherit;
+    color: inherit;
+  }
+
+  select {
+    appearance: none;
+  }
+
+  /* Scrollbar */
+  @supports (scrollbar-width: thin) {
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-sand-300) transparent;
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ==========================================================================
+   Utilities
+   ========================================================================== */
+
+@utility container-page {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+  max-width: 96rem;
+
+  @media (min-width: 768px) {
+    padding-inline: 2rem;
+  }
+  @media (min-width: 1280px) {
+    padding-inline: 3rem;
+  }
+}
+
+/** Uppercase micro-label used across the storefront. */
+@utility eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+@utility text-balance-tight {
+  text-wrap: balance;
+  letter-spacing: -0.03em;
+}
+
+/** Hides content visually while keeping it for assistive tech. */
+@utility visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/** Clamp helpers */
+@utility line-clamp-2-safe {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@utility line-clamp-3-safe {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Frosted glass surface: blurs and saturates what sits behind it, keeps a
+   translucent white tint, and adds the top-inner highlight + drop shadow that
+   make it read as a physical pane rather than a flat box. */
+@utility glass {
+  background-color: color-mix(in oklab, white 22%, transparent);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid color-mix(in oklab, white 35%, transparent);
+  box-shadow:
+    inset 0 1px 0 0 color-mix(in oklab, white 45%, transparent),
+    0 8px 24px -8px rgb(28 25 23 / 0.35);
+}
+
+/* Denser variant for controls that sit on busy imagery. */
+@utility glass-strong {
+  background-color: color-mix(in oklab, white 32%, transparent);
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  border: 1px solid color-mix(in oklab, white 45%, transparent);
+  box-shadow:
+    inset 0 1px 0 0 color-mix(in oklab, white 55%, transparent),
+    0 10px 30px -10px rgb(28 25 23 / 0.45);
+}
+
+/* Hairline rule that reads as a considered detail rather than a border. */
+@utility rule {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--color-sand-300) 12%,
+    var(--color-sand-300) 88%,
+    transparent
+  );
+}
+
+/* ==========================================================================
+   Animations
+   ========================================================================== */
+
+@keyframes amq-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes amq-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes amq-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes amq-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes amq-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.98) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Carousel dot timer: fills left-to-right across the autoplay duration. */
+@keyframes amq-dot-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes amq-dot-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@utility animate-fade-up {
+  animation: amq-fade-up 0.7s var(--ease-out-expo) both;
+}
+
+@utility animate-fade-in {
+  animation: amq-fade-in 0.5s var(--ease-out-expo) both;
+}
+
+@utility animate-scale-in {
+  animation: amq-scale-in 0.32s var(--ease-out-expo) both;
+}
+
+@utility animate-marquee {
+  animation: amq-marquee 34s linear infinite;
+}
+
+/* Scroll-reveal: opt in with data-reveal, triggered by IntersectionObserver */
+@utility reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.8s var(--ease-out-expo),
+    transform 0.8s var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+
+  &[data-visible="true"] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-sand-100) 25%,
+    var(--color-sand-200) 37%,
+    var(--color-sand-100) 63%
+  );
+  background-size: 200% 100%;
+  animation: amq-shimmer 1.6s linear infinite;
+}
+
+/* ==========================================================================
+   Component primitives
+   ========================================================================== */
+
+@layer components {
+  /* Buttons ------------------------------------------------------------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding: 0.9375rem 1.5rem;
+    border-radius: 2px;
+    transition:
+      background-color 0.25s var(--ease-out-expo),
+      color 0.25s var(--ease-out-expo),
+      border-color 0.25s var(--ease-out-expo),
+      transform 0.25s var(--ease-out-expo),
+      box-shadow 0.25s var(--ease-out-expo);
+    cursor: pointer;
+  }
+
+  .btn:active {
+    transform: translateY(1px);
+  }
+
+  .btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn-primary {
+    background-color: var(--color-brand-900);
+    color: white;
+  }
+  .btn-primary:hover:not(:disabled) {
+    background-color: var(--color-accent-500);
+    box-shadow: var(--shadow-card);
+  }
+
+  .btn-accent {
+    background-color: var(--color-accent-500);
+    color: var(--color-brand-950);
+  }
+  .btn-accent:hover:not(:disabled) {
+    background-color: var(--color-accent-400);
+    box-shadow: var(--shadow-card);
+  }
+
+  .btn-outline {
+    border: 1px solid currentColor;
+    background: transparent;
+    /* Own the resting colour here rather than letting callers pass a
+       text-* utility. Utilities sit in a later cascade layer than components,
+       so a caller-supplied text-brand-900 silently outranks the :hover rule
+       below and the label never turns white. */
+    color: var(--color-brand-900);
+  }
+  .btn-outline:hover:not(:disabled) {
+    background-color: var(--color-brand-900);
+    border-color: var(--color-brand-900);
+    color: white;
+  }
+
+  /* Softer pair for editorial/surface contexts: the solid stays dark on hover
+     instead of flipping to the accent, which reads as industrial rather than
+     premium. */
+  .btn-ink {
+    background-color: var(--color-brand-900);
+    color: white;
+  }
+  .btn-ink:hover:not(:disabled) {
+    background-color: var(--color-brand-950);
+    box-shadow: var(--shadow-lift);
+  }
+
+  .btn-outline-soft {
+    /* sand-600 clears the 3:1 minimum for a non-text control boundary;
+       sand-300 sat at 1.42:1 on the sand-50 hero and read as no border at all. */
+    border: 1px solid var(--color-sand-600);
+    color: var(--color-brand-900);
+    background: transparent;
+  }
+  .btn-outline-soft:hover:not(:disabled) {
+    border-color: var(--color-brand-900);
+    background: transparent;
+  }
+
+  .btn-ghost-light {
+    border: 1px solid rgb(255 255 255 / 0.4);
+    color: white;
+    background: rgb(255 255 255 / 0.08);
+    backdrop-filter: blur(8px);
+  }
+  .btn-ghost-light:hover:not(:disabled) {
+    background: white;
+    color: var(--color-brand-900);
+    border-color: white;
+  }
+
+  /* Field ---------------------------------------------------------------- */
+  .field {
+    width: 100%;
+    background: white;
+    border: 1px solid var(--color-sand-300);
+    border-radius: 2px;
+    padding: 0.8125rem 0.9375rem;
+    font-size: 0.9375rem;
+    color: var(--color-ink);
+    transition:
+      border-color 0.2s var(--ease-out-expo),
+      box-shadow 0.2s var(--ease-out-expo);
+  }
+
+  .field::placeholder {
+    color: var(--color-sand-500);
+  }
+
+  .field:hover:not(:disabled) {
+    border-color: var(--color-sand-400);
+  }
+
+  .field:focus {
+    outline: none;
+    border-color: var(--color-accent-500);
+    box-shadow: 0 0 0 3px rgb(255 121 0 / 0.14);
+  }
+
+  .field[aria-invalid="true"] {
+    border-color: var(--color-danger);
+  }
+  .field[aria-invalid="true"]:focus {
+    box-shadow: 0 0 0 3px rgb(180 35 24 / 0.14);
+  }
+
+  .label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+    margin-bottom: 0.5rem;
+  }
+
+  /* Link with an animated underline --------------------------------------- */
+  .link-underline {
+    position: relative;
+    display: inline-block;
+  }
+  .link-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    height: 1px;
+    width: 100%;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s var(--ease-out-expo);
+  }
+  .link-underline:hover::after,
+  .link-underline[data-active="true"]::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+/* ==========================================================================
+   Reduced motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ==========================================================================
+   Print — order summaries and invoices
+   ========================================================================== */
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: white;
+  }
 }
