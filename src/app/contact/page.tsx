@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { ArrowUpRight, MapPin, MessageCircle, Phone } from 'lucide-react';
 import { PageHero } from '@/components/ui/page-hero';
-import { sceneArt } from '@/lib/generated/images';
 import { contact, social, store } from '@/lib/store';
 import { whatsappUrl } from '@/lib/whatsapp';
 import { jsonLd } from '@/lib/utils';
@@ -35,7 +34,7 @@ export default function ContactPage() {
     name: store.name,
     description: store.description,
     url: store.url,
-    image: `${store.url}${sceneArt.story}`,
+    image: `${store.url}/images/websiteimgs/about-bg.png`,
     telephone: contact.phoneDisplay,
     sameAs: social.map((s) => s.href),
     contactPoint: [

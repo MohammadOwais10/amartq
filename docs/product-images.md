@@ -69,9 +69,9 @@ appear on the home page, shop grid, category pages, search, or the sitemap.
 Categories left with no products are dropped too. This is automatic, so you
 only need to name what you actually have.
 
-Category tiles and editorial/scene images are hand-maintained in
-`src/lib/generated/images.ts` and live directly in `public/images/`; only
-**product** photography comes from `productimgs/`.
+All imagery on the site is either your product photography from `productimgs/`
+or a hand-placed file in `public/images/websiteimgs/` (hero slides, About
+background, craft photo). There is no generated or AI art layer any more.
 
 ## Then
 

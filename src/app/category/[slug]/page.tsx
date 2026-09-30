@@ -1,13 +1,12 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import Image from 'next/image';
 import Link from 'next/link';
 import { Suspense } from 'react';
-import { Check } from 'lucide-react';
+import { ArrowDown } from 'lucide-react';
 import { ShopView } from '@/components/shop/shop-view';
 import { getCategory, getProductsByCategory, visibleCategories as categories } from '@/lib/catalog';
-import { categoryArt } from '@/lib/generated/images';
-import { store } from '@/lib/store';
+import { fulfilment, store } from '@/lib/store';
+import { money } from '@/lib/types';
 import { jsonLd } from '@/lib/utils';
 
 /** Categories without any photographed product are not valid routes. */
@@ -24,7 +23,6 @@ export async function generateMetadata({
   const category = getCategory(slug);
   if (!category) return { title: 'Category not found' };
 
-  const art = categoryArt[slug];
   return {
     title: category.name,
     description: category.description,
@@ -33,7 +31,6 @@ export async function generateMetadata({
       title: `${category.name} — ${store.name}`,
       description: category.description,
       url: `${store.url}/category/${slug}`,
-      images: art ? [{ url: art.image, width: 1400, height: 1000, alt: category.name }] : undefined,
     },
   };
 }
@@ -60,8 +57,24 @@ export default async function CategoryPage({ params }: PageProps<'/category/[slu
   const category = getCategory(slug);
   if (!category) notFound();
 
-  const art = categoryArt[slug];
-  const count = getProductsByCategory(slug).length;
+  const items = getProductsByCategory(slug);
+  const count = items.length;
+
+  /* Real swatches from this category's photographed colourways, deduped. This
+     stands in for the category photograph we no longer ship: it is data we
+     already have, and it is honest about what the buyer is scrolling to. */
+  const swatches = Array.from(
+    new Map(
+      items
+        .flatMap((p) => p.colourways)
+        .filter((c) => /^#[0-9a-f]{6}$/i.test(c.hex))
+        .map((c) => [c.hex.toLowerCase(), c.name] as const),
+    ).entries(),
+  ).slice(0, 12);
+
+  /* Price span, so the hero can say what this category actually costs. */
+  const prices = items.map((p) => p.price);
+  const from = prices.length ? Math.min(...prices) : 0;
 
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
@@ -88,12 +101,27 @@ export default async function CategoryPage({ params }: PageProps<'/category/[slu
         dangerouslySetInnerHTML={{ __html: jsonLd([breadcrumbSchema, collectionSchema]) }}
       />
 
-      {/* Category hero ------------------------------------------------ */}
+      {/* Category hero ------------------------------------------------
+          Two columns on desktop. Left is the copy the buyer needs to decide
+          whether this category is for them; right is the facts plus real
+          swatches, so the hero carries information instead of decoration. */}
       <section className="relative overflow-hidden border-b border-sand-200 bg-brand-950 text-white">
-        <div className="grid lg:grid-cols-2">
-          <div className="flex flex-col justify-center px-6 py-14 sm:px-10 lg:px-16 lg:py-20">
-            <nav aria-label="Breadcrumb" className="mb-6">
-              <ol className="flex items-center gap-1.5 text-xs text-brand-300">
+        {/* Same ambient wash as PageHero, so the two dark heroes on the site
+            read as one family. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-32 -right-[10%] size-[30rem] rounded-full bg-brand-500/12 blur-3xl"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -bottom-40 -left-[8%] size-[24rem] rounded-full bg-brand-400/10 blur-3xl"
+        />
+
+        <div className="container-page relative grid gap-12 py-14 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16 lg:py-20">
+          {/* Copy ------------------------------------------------------ */}
+          <div>
+            <nav aria-label="Breadcrumb" className="mb-7">
+              <ol className="flex flex-wrap items-center gap-1.5 text-xs text-brand-300">
                 <li>
                   <Link href="/" className="transition-colors hover:text-accent-500">
                     Home
@@ -112,60 +140,45 @@ export default async function CategoryPage({ params }: PageProps<'/category/[slu
               </ol>
             </nav>
 
-            <p className="eyebrow mb-3 text-accent-500">
-              {count} {count === 1 ? 'product' : 'products'}
+            <p className="eyebrow mb-4 text-accent-500">
+              {count} {count === 1 ? 'design' : 'designs'}
+              {from > 0 && (
+                <>
+                  <span aria-hidden="true" className="mx-2 text-brand-500">
+                    &middot;
+                  </span>
+                  from {money(from)}
+                </>
+              )}
             </p>
+
             <h1 className="text-display text-white">{category.name}</h1>
-            <p className="mt-3 max-w-lg font-display text-lg italic text-brand-200">
+
+            <p className="mt-4 max-w-xl font-display text-xl italic leading-snug text-brand-200">
               {category.tagline}
             </p>
-            <p className="mt-5 max-w-xl leading-relaxed text-brand-200">
-              {category.description}
-            </p>
 
-            <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2.5">
-              {category.highlights.map((h) => (
-                <li key={h} className="flex items-center gap-2 text-sm text-brand-100">
-                  <Check className="text-accent-500" />
-                  {h}
-                </li>
-              ))}
-            </ul>
+            <p className="mt-6 max-w-xl leading-relaxed text-brand-200">{category.description}</p>
 
-            <div className="mt-8 flex flex-wrap gap-2">
-              {category.sizes.map((s) => (
-                <span
-                  key={s}
-                  className="border border-white/20 px-2.5 py-1 text-[11px] font-medium text-brand-200"
-                >
-                  {s}
-                </span>
-              ))}
-            </div>
+            <a
+              href="#designs"
+              className="btn btn-outline mt-9 border-white/25 text-white hover:border-white/50 hover:bg-white/10"
+            >
+              See all {count}
+              <ArrowDown size={16} aria-hidden="true" />
+            </a>
           </div>
 
-          {art && (
-            <div className="relative min-h-72 lg:min-h-full" data-reveal>
-              <Image
-                src={art.image}
-                alt={`${category.name} by ${store.name}`}
-                fill
-                preload
-                sizes="(min-width: 1024px) 50vw, 100vw"
-                className="object-cover"
-              />
-              <div
-                aria-hidden="true"
-                className="absolute inset-0 bg-gradient-to-r from-brand-950 via-brand-950/20 to-transparent lg:block"
-              />
-            </div>
-          )}
+        
         </div>
       </section>
 
-      <Suspense fallback={<CategoryFallback />}>
-        <ShopView lockedCategory={slug} />
-      </Suspense>
+      {/* Grid — id is the target for the hero's "See all" jump. */}
+      <div id="designs" className="scroll-mt-24">
+        <Suspense fallback={<CategoryFallback />}>
+          <ShopView lockedCategory={slug} />
+        </Suspense>
+      </div>
     </>
   );
 }

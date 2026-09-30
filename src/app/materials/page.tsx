@@ -1,9 +1,7 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { PageHero } from '@/components/ui/page-hero';
 import { Check } from '@/components/ui/product-primitives';
-import { sceneArt } from '@/lib/generated/images';
 import { store } from '@/lib/store';
 import { jsonLd } from '@/lib/utils';
 
@@ -25,7 +23,6 @@ const fibres = [
       ['Finish', 'Peached on both faces'],
       ['Cert', 'OEKO-TEX Standard 100'],
     ],
-    image: 'sheets',
   },
   {
     name: 'Washed Normandy linen',
@@ -37,7 +34,6 @@ const fibres = [
       ['Finish', 'Stone-washed, enzyme softened'],
       ['Cert', 'OEKO-TEX, Masters of Linen'],
     ],
-    image: 'roomBedding',
   },
   {
     name: 'RWS merino',
@@ -49,7 +45,6 @@ const fibres = [
       ['Finish', 'Double-brushed, breathable'],
       ['Cert', 'RWS, OEKO-TEX Standard 100'],
     ],
-    image: 'throws',
   },
   {
     name: 'Organic cotton terry',
@@ -61,7 +56,6 @@ const fibres = [
       ['Finish', 'Brushed loop, low-shrink'],
       ['Cert', 'GOTS, OEKO-TEX Standard 100'],
     ],
-    image: 'towels',
   },
 ];
 
@@ -88,13 +82,6 @@ const process = [
   },
 ];
 
-const imageFor = {
-  sheets: sceneArt.roomBedding,
-  roomBedding: sceneArt.story,
-  throws: sceneArt.roomCushions,
-  towels: sceneArt.roomCurtains,
-} as const;
-
 export default function MaterialsPage() {
   const schema = {
     '@context': 'https://schema.org',
@@ -118,31 +105,18 @@ export default function MaterialsPage() {
 
       {/* Fibres ------------------------------------------------------ */}
       <section className="container-page py-16 lg:py-24">
-        <div className="space-y-20 lg:space-y-28">
-          {fibres.map((f, i) => (
+        <div className="space-y-16 lg:space-y-20">
+          {fibres.map((f) => (
             <article
               key={f.name}
-              className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16"
+              className="grid gap-8 border-t border-sand-200 pt-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16"
               data-reveal
             >
-              <div className={i % 2 ? 'lg:order-2' : undefined}>
-                <div className="relative aspect-4/3 overflow-hidden bg-sand-200">
-                  <Image
-                    src={imageFor[f.image as keyof typeof imageFor]}
-                    alt={f.name}
-                    fill
-                    sizes="(min-width: 1024px) 46vw, 100vw"
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-
               <div>
                 <p className="eyebrow mb-3 text-accent-600">{f.origin}</p>
                 <h2 className="text-section text-brand-900">{f.name}</h2>
-                <p className="mt-5 leading-relaxed text-ink-soft">{f.body}</p>
 
-                <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-4 border-t border-sand-200 pt-6">
+                <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5">
                   {f.specs.map(([k, v]) => (
                     <div key={k}>
                       <dt className="eyebrow text-sand-500">{k}</dt>
@@ -151,6 +125,8 @@ export default function MaterialsPage() {
                   ))}
                 </dl>
               </div>
+
+              <p className="leading-relaxed text-ink-soft lg:pt-8">{f.body}</p>
             </article>
           ))}
         </div>
