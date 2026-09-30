@@ -40,10 +40,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# user-supplied product photography (81MB of originals; processed into
-# public/images/user at build time by scripts/build-user-images.mjs)
+# Raw product photography — 76MB of phone photos. Never committed; it stays on
+# this machine only. The processed webp output in public/images/user IS
+# committed, because that is what the site serves and Vercel builds from a
+# clone with no access to your disk.
 public/images/productimgs/
 
-# processed product photography, rebuilt by `npm run images:user`
-public/images/user/
 .label-progress.json

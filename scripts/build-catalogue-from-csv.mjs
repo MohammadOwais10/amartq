@@ -82,6 +82,18 @@ function hexFor(name) {
 }
 
 function main() {
+  /* The raw phone photos in public/images/productimgs are gitignored, so a
+     fresh clone (and every Vercel build) has no SRC_DIR. The generated
+     catalogue is committed, so there is nothing to rebuild in that case —
+     skip cleanly instead of crashing the deploy. */
+  if (!existsSync(SRC_DIR)) {
+    console.log(
+      `No ${SRC_DIR.replace(ROOT, '')} — skipping. Using the committed\n` +
+        `src/lib/generated/user-catalogue.ts. Run this locally with the photos present to rebuild.`,
+    );
+    return;
+  }
+
   const rows = parseCsv(readFileSync(CSV, 'utf8'));
   const header = rows[0].map((h) => h.trim());
   const col = (n) => header.indexOf(n);

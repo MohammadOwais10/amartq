@@ -36,9 +36,16 @@ const viewRank = (v) => {
 };
 
 async function main() {
+  /* No raw photos means no build step to run. The processed output in
+     public/images/user is committed, and src/lib/generated/user-images.ts is
+     committed alongside it, so skipping here is what lets a Vercel build use
+     them. See build-catalogue-from-csv.mjs for the same guard. */
   if (!existsSync(SRC_DIR)) {
-    console.error(`No directory at ${SRC_DIR}`);
-    process.exit(1);
+    console.log(
+      `No ${SRC_DIR.replace(ROOT, '')} — skipping. Using the committed\n` +
+        `src/lib/generated/user-images.ts and public/images/user/.`,
+    );
+    return;
   }
 
   // Product and colourway names come from the generated user catalogue, which is

@@ -5,7 +5,7 @@ import { Suspense } from 'react';
 import { ArrowDown } from 'lucide-react';
 import { ShopView } from '@/components/shop/shop-view';
 import { getCategory, getProductsByCategory, visibleCategories as categories } from '@/lib/catalog';
-import { fulfilment, store } from '@/lib/store';
+import { store } from '@/lib/store';
 import { money } from '@/lib/types';
 import { jsonLd } from '@/lib/utils';
 
@@ -60,18 +60,6 @@ export default async function CategoryPage({ params }: PageProps<'/category/[slu
   const items = getProductsByCategory(slug);
   const count = items.length;
 
-  /* Real swatches from this category's photographed colourways, deduped. This
-     stands in for the category photograph we no longer ship: it is data we
-     already have, and it is honest about what the buyer is scrolling to. */
-  const swatches = Array.from(
-    new Map(
-      items
-        .flatMap((p) => p.colourways)
-        .filter((c) => /^#[0-9a-f]{6}$/i.test(c.hex))
-        .map((c) => [c.hex.toLowerCase(), c.name] as const),
-    ).entries(),
-  ).slice(0, 12);
-
   /* Price span, so the hero can say what this category actually costs. */
   const prices = items.map((p) => p.price);
   const from = prices.length ? Math.min(...prices) : 0;
@@ -102,9 +90,9 @@ export default async function CategoryPage({ params }: PageProps<'/category/[slu
       />
 
       {/* Category hero ------------------------------------------------
-          Two columns on desktop. Left is the copy the buyer needs to decide
-          whether this category is for them; right is the facts plus real
-          swatches, so the hero carries information instead of decoration. */}
+          Type only: category name, how many designs exist, what they cost from,
+          and the description. Same ambient wash as PageHero so the two dark
+          heroes on the site read as one family. */}
       <section className="relative overflow-hidden border-b border-sand-200 bg-brand-950 text-white">
         {/* Same ambient wash as PageHero, so the two dark heroes on the site
             read as one family. */}
@@ -117,7 +105,7 @@ export default async function CategoryPage({ params }: PageProps<'/category/[slu
           className="pointer-events-none absolute -bottom-40 -left-[8%] size-[24rem] rounded-full bg-brand-400/10 blur-3xl"
         />
 
-        <div className="container-page relative grid gap-12 py-14 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16 lg:py-20">
+        <div className="container-page relative py-14 lg:py-20">
           {/* Copy ------------------------------------------------------ */}
           <div>
             <nav aria-label="Breadcrumb" className="mb-7">
@@ -168,8 +156,6 @@ export default async function CategoryPage({ params }: PageProps<'/category/[slu
               <ArrowDown size={16} aria-hidden="true" />
             </a>
           </div>
-
-        
         </div>
       </section>
 
